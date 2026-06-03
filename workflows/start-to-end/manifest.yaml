@@ -1,0 +1,12 @@
+workflow_name: start-to-end
+description: Full lifecycle development from task gathering to QA.
+components:
+  agents:
+    - ../../agents/researcher.md
+    - ../../agents/developer.md
+    - ../../agents/qa-engineer.md
+  skills:
+    - ../../skills/analysis/gather-tasks.md
+    - ../../skills/coding/refactor.md
+  rules:
+    - ../../rules/style-guides/clean-code.md
