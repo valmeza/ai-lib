@@ -1,0 +1,6 @@
+{
+  "name": "github",
+  "transport": "stdio",
+  "command": ["{env:HOME}/.local/bin/github-mcp-server"],
+  "available_tools": ["*"]
+}

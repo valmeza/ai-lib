@@ -1,0 +1,51 @@
+schema: spec-driven
+
+context: |
+  Project: ai-lib
+  Domain: AI-powered software development workflows & agent configuration
+  Philosophy: "Less is more" — modular, iteration-first, machine-readable, terminal-centric
+  Repo purpose: Living documentation of technical identity — workflows, rules, agent logic, skill-tracking
+
+  Tech stack:
+    - OpenSpec CLI (spec-driven development workflow)
+    - OpenCode (AI agent framework)
+    - YAML (configuration, manifests, frontmatter)
+    - Markdown (agent prompts, skills, rules)
+    - Node.js (OpenCode plugin dependency)
+
+  Directory structure:
+    pack.json         — aipack manifest
+    agents/           — Agent definitions (Pathfinder, Forge, Validator, Orchestrator)
+    skills/           — On-demand skill instructions (SKILL.md per skill)
+    rules/            — Behavioral constraints and style guides
+    workflows/        — Repeatable multi-step processes
+    mcp/              — MCP server configurations
+    openspec/         — OpenSpec schema, config, and changes
+    .agent/           — OpenSpec integration (managed)
+    .opencode/        — OpenCode integration (managed)
+
+  Key conventions:
+    - Modularity: Skills are self-contained; never hardcode skills inside agents
+    - Workflow manifests (manifest.yaml) link agents, skills, and rules
+    - Commands use /opsx-{action} (hyphen) or /opsx:{action} (colon) syntax
+    - Changes structured as openspec/changes/<name>/ with artifacts (proposal, specs, design, tasks)
+    - Spec-driven schema: artifacts created in dependency order
+    - Delta specs for in-change spec modifications, synced to main specs on archive
+    - Agent personae: Pathfinder (discovery/planning), Forge (implementation), Validator (QA verification), Orchestrator (pipeline manager)
+    - All files optimized for machine-readability by local models and agents
+
+  See also METADATA.md in the project root for the authoritative repository structure guide.
+
+rules:
+  proposal:
+    - Keep proposals concise and focused on scope
+    - Always include context, problem statement, and proposed approach
+    - Reference existing agents/skills/workflows when relevant
+  design:
+    - Describe changes in terms of agents, skills, rules, and workflows
+    - Keep designs modular — prefer new skills over modifying existing ones
+    - Follow the existing YAML/Markdown patterns
+  tasks:
+    - Break tasks into focused, single-responsibility chunks
+    - Prefer adding/editing skills, agents, or manifests over raw code
+    - Verify via openspec status after completing tasks
