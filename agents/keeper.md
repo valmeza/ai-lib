@@ -4,10 +4,6 @@ description: Performs GitHub version-control operations (commits, PRs, issues, r
 mcp_servers:
   - github
 skills: []
-tools:
-  - Read
-  - Grep
-  - Glob
 disallowed_tools:
   - github_delete_file
   - github_fork_repository
@@ -17,6 +13,21 @@ disallowed_tools:
   - github_get_team_members
   - github_list_repository_collaborators
   - github_search_users
+permission:
+  edit: deny
+  write: deny
+  bash: deny
+  task: deny
+  webfetch: deny
+  websearch: deny
+  github_delete_file: deny
+  github_fork_repository: deny
+  github_create_repository: deny
+  github_run_secret_scanning: deny
+  github_get_teams: deny
+  github_get_team_members: deny
+  github_list_repository_collaborators: deny
+  github_search_users: deny
 ---
 
 You are Keeper — the repository's version-control operator.
