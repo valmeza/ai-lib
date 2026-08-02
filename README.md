@@ -1,34 +1,52 @@
-# ai-lib
+  +===========================================================+
+  |                                                           |
+  |          *    *    *    *    *    *    *                  |
+  |         / \  / \  / \  / \  / \  / \  / \                 |
+  |        *    *    *    *    *    *    *                    |
+  |         \ /  \ /  \ /  \ /  \ /  \ /  \ /                 |
+  |          *    *    *    *    *    *    *                  |
+  |                                                           |
+  |                       ai-lib                              |
+  |            Modular AI Workflow Library                    |
+  |                                                           |
+  +===========================================================+
 
-> `system_ready: persistent context enabled`
+A library of AI agent custom instructions. Some are half-baked, some are forged nicely. You may find something cool, or boring — like a library has.
 
-**ai-lib** is my primary interface for AI-driven development. This repository holds the living documentation of my technical identity—workflows, refined rules, experimental agent logic, and skill-tracking data.
+Agent definitions, skills, behavioral rules, workflows, and MCP configs — all portable as an aipack.
 
----
+  - * - * - * - * - * - * - * - * - * - * - * - * - * - * - *
 
-### 🧠 Core Focus
+## Inventory
 
-* **Workflows**: The terminal-centric routines that turn complex tasks into repeatable patterns.
-* **Skills**: My evolving technical stack, verified through real-world implementation.
-* **Rules**: System instructions and guardrails that define how my AI collaborators should interact with my code.
-* **Sub-agents**: Modular logic for local agents, MCP servers, and automation scripts.
+| Layer | Count | What |
+|-------|-------|------|
+| **Agents** | 4 | Reusable personas with tool/skill bindings (Pathfinder, Forge, Validator, Orchestrator) |
+| **Skills** | 6 | On-demand instructions — load when needed |
+| **Rules** | 4 | Always-on behavioral constraints |
+| **Workflows** | 1 | Multi-step pipelines from idea to shipped |
+| **MCP** | 1 | Portable server configs |
 
----
+  - * - * - * - * - * - * - * - * - * - * - * - * - * - * - *
 
-### ⚡ Philosophy
+## Quick Start
 
-*"Less is more."*
+```bash
+# Prerequisite: Set your GitHub Personal Access Token
+export GITHUB_PERSONAL_ACCESS_TOKEN=ghp_...
 
-I avoid over-engineering the directory structure. This repository is **not** a museum; it is a workshop. If a directory isn't providing immediate, high-value context to my current development loop, it gets flattened. I value **snappiness** and **readability** over complex hierarchies.
+aipack pack install --url https://github.com/<your-user>/ai-lib.git --name ai-lib
+aipack pack add ai-lib
+aipack sync --harness all
 
----
+# Then in any supported coding agent:
+#   /spark-to-steel   — run the full pipeline
+```
 
-### 🚀 Implementation Strategy
+  - * - * - * - * - * - * - * - * - * - * - * - * - * - * - *
 
-This repo is designed to be injected into my development context.
+## Philosophy
 
-* **Machine-Readable**: Every file is optimized to be read and understood by local models and agents.
-* **Iteration-First**: Concepts start as "half-baked" ideas and are refined into core workflows only after they prove their worth.
-* **Terminal-Centric**: Optimized for CLI-based access and management.
-
----
+- **Machine-Readable** — optimized for AI agents, not humans browsing
+- **Iteration-First** — prove it works, then formalize it
+- **Portable** — one source of truth, sync to any harness
