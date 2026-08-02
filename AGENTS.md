@@ -73,7 +73,7 @@ All agents reference MCP servers and skills by ID (not path). Tool restrictions 
 - **Skills loaded**: none
 - **MCP servers**: github
 - **Tools**: Read, Grep, Glob — read-only locally.
-- **Restrictions**: No Write, Edit, Bash, Terminal. Denied MCP tools: `github_delete_file`, `github_fork_repository`, `github_create_repository`, `github_run_secret_scanning`, team/user reads. All mutations gated by MUTATION stop-and-confirm (see `keeper-rules`).
+- **Restrictions**: No Write, Edit, Bash, Terminal. Denied MCP tools: `github_delete_file`, `github_fork_repository`, `github_create_repository`, `github_run_secret_scanning`, team/user reads. All mutations gated by MUTATION stop-and-confirm (see `keeper-rules`). OpenCode enforcement is via a harness-specific `permission` field in frontmatter (denies `edit`/`write`/`bash`/`task`/`webfetch`/`websearch` + the denied MCP tools); the aipack adapter passes it through verbatim, so keep `disallowed_tools` as the portable deny-list and `permission` as the OpenCode-only enforcement — update both together.
 
 ### Pipeline Flow
 

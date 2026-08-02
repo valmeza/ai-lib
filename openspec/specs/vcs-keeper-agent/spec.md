@@ -1,5 +1,8 @@
-## ADDED Requirements
+# vcs-keeper-agent Specification
 
+## Purpose
+TBD - created by archiving change add-vcs-keeper-agent. Update Purpose after archive.
+## Requirements
 ### Requirement: Keeper agent definition exists
 The pack SHALL define a `keeper` agent at `agents/keeper.md` that performs GitHub version-control operations (commits, PRs, issues, release/tag tracking) with a curated tool allowlist and MUST NOT modify local code.
 
@@ -8,8 +11,8 @@ The pack SHALL define a `keeper` agent at `agents/keeper.md` that performs GitHu
 - **THEN** `agents/keeper.md` exists with frontmatter matching the keeper name
 
 #### Scenario: Native tools are read-only
-- **WHEN** keeper's native tool allowlist is inspected
-- **THEN** it includes `Read`, `Grep`, `Glob` and excludes `Write`, `Edit`, `Bash`, `Terminal`
+- **WHEN** keeper's rendered OpenCode tool surface is inspected
+- **THEN** `Read`, `Grep`, `Glob` are available and `Write`, `Edit`, `Bash`, `Terminal` are denied via the `permission` deny-list
 
 ### Requirement: Keeper MCP tool restrictions
 The keeper agent SHALL reference the `github` MCP server and SHALL deny destructive or unneeded GitHub tools via a `disallowed_tools` deny-list.
@@ -49,4 +52,5 @@ The pack SHALL verify keeper's rendered tool surface after `aipack sync` using `
 
 #### Scenario: Sync propagates keeper
 - **WHEN** `aipack sync` runs
-- **THEN** the OpenCode harness agent for `keeper` renders with read-only native tools and the `disallowed_tools` deny-list
+- **THEN** the OpenCode harness agent for `keeper` renders with read-only native tools (via the `permission` deny-list) and the `disallowed_tools` deny-list
+
