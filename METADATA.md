@@ -3,7 +3,7 @@ This repository is a modular AI workflow library.
 
 ## Directory Structure
 - /pack.json: aipack manifest (portable pack definition)
-- /agents: Agent definitions with YAML frontmatter (Pathfinder, Forge, Validator, Orchestrator)
+- /agents: Agent definitions with YAML frontmatter (Pathfinder, Forge, Validator, Orchestrator, Keeper)
 - /skills: On-demand skill instructions (one SKILL.md per skill directory)
 - /rules: Behavioral constraints and style guides
 - /workflows: Repeatable multi-step processes (markdown + frontmatter)

@@ -16,7 +16,7 @@ ai-lib is a modular AI workflow library / agent pack. It defines a pipeline of s
 |------|-------------|
 | `pack.json` | aipack manifest (name, version, schema) |
 | `METADATA.md` | SSOT for repository structure and agent protocol |
-| `agents/` | 4 agent definitions with YAML frontmatter (Pathfinder, Forge, Validator, Orchestrator) |
+| `agents/` | 5 agent definitions with YAML frontmatter (Pathfinder, Forge, Validator, Orchestrator, Keeper) |
 | `skills/` | 6 on-demand skill instructions (one SKILL.md per directory) |
 | `rules/agent-rules/` | 3 behavioral constraint files (forge-rules, pathfinder-rules, validator-rules) |
 | `rules/style-guides/` | 1 coding style guide (clean-code) |
@@ -66,6 +66,15 @@ All agents reference MCP servers and skills by ID (not path). Tool restrictions 
 - **Tools**: Read, Grep, Glob — coordination only, no write or execution.
 - **Restrictions**: No Write, Edit, Bash, Terminal.
 
+## Keeper (`agents/keeper.md`)
+
+- **Role**: GitHub version-control operator. Commits work, manages PRs and issues, reports on releases and tags.
+- **Persona**: Extremely controlled operator — GitHub-only, never touches local code.
+- **Skills loaded**: none
+- **MCP servers**: github
+- **Tools**: Read, Grep, Glob — read-only locally.
+- **Restrictions**: No Write, Edit, Bash, Terminal. Denied MCP tools: `github_delete_file`, `github_fork_repository`, `github_create_repository`, `github_run_secret_scanning`, team/user reads. All mutations gated by MUTATION stop-and-confirm (see `keeper-rules`).
+
 ### Pipeline Flow
 
 ```
@@ -93,13 +102,14 @@ Six on-demand skills in `skills/`. Each has a `SKILL.md` with frontmatter and st
 
 # Rules
 
-Four behavioral constraint files in `rules/`. Rules are always-on constraints (unlike skills which are on-demand).
+Five behavioral constraint files in `rules/`. Rules are always-on constraints (unlike skills which are on-demand).
 
 | File | Description | Key Constraints |
 |------|-------------|-----------------|
 | `rules/agent-rules/forge-rules.md` | Forge behavioral constraints — implementation discipline. | Follow spec exactly, run lint/tests, self-review, commit cleanly, flag blockers. No scope creep, no TODO/debug artifacts. |
 | `rules/agent-rules/pathfinder-rules.md` | Pathfinder behavioral constraints — discovery and planning only. | Never write implementation code. Investigate codebase first. Output structured `tasks.md`. No commits, tests, or deployment. |
 | `rules/agent-rules/validator-rules.md` | Validator behavioral constraints — thorough verification. | Assume nothing works. Test every criterion. Document failures with evidence. No approving without tests. |
+| `rules/agent-rules/keeper-rules.md` | Keeper behavioral constraints — mutation-gated GitHub version control. | MUTATION gate on every state change. Never delete/fork/create repos, force-push, or merge without explicit confirmation. No native writes. |
 | `rules/style-guides/clean-code.md` | Coding style guide. | Match existing style, no comments unless convention uses them, meaningful names, single-purpose functions, no dead code, clean imports. |
 
 # Workflows
@@ -118,11 +128,12 @@ Full lifecycle pipeline: requirements gathering → implementation → QA verifi
 
 ## GitHub (`mcp/github.json`)
 
-- **Type**: MCP server
-- **Transport**: stdio
-- **Command**: `{env:HOME}/.local/bin/github-mcp-server`
+- **Type**: MCP server (remote)
+- **Transport**: remote — `https://api.githubcopilot.com/mcp/`
+- **Auth**: `Authorization: Bearer {env:GITHUB_PERSONAL_ACCESS_TOKEN}` with `oauth: false`
 - **Tools**: all (`*`) — no allowlist restriction
-- **Portability**: No absolute paths or secrets. Uses `{env:HOME}` placeholder. Works on any machine with the binary at the configured path.
+- **Portability**: No absolute paths or secrets. Uses `{env:GITHUB_PERSONAL_ACCESS_TOKEN}` placeholder.
+- **Prerequisite**: Set `GITHUB_PERSONAL_ACCESS_TOKEN` in your shell environment (a GitHub PAT with appropriate scopes).
 
 # Harness Wiring
 
@@ -153,7 +164,7 @@ These are managed by OpenSpec. Do not modify them directly — use the OpenSpec 
 3. **Pick an agent** — for a new request, invoke Pathfinder (discovery). For implementation, invoke Forge. For verification, invoke Validator. For end-to-end orchestration, invoke Orchestrator.
 4. **Reference skills by ID** — use skill IDs (`gather-requirements`, `implement-task`, etc.) when loading skills, not filesystem paths.
 5. **Follow the pipeline** — the spark-to-steel workflow is the primary development loop. Let Orchestrator coordinate if available.
-6. **Respect tool restrictions** — Pathfinder and Validator are read-only. Forge has full write access. Orchestrator is coordination-only.
+6. **Respect tool restrictions** — Pathfinder, Validator, and Keeper are read-only locally. Forge has full write access. Orchestrator is coordination-only.
 7. **Check actual frontmatter** — agent skill/tool bindings in this file summarize frontmatter but may drift. Consult the actual agent `.md` files as SSOT.
 8. **Use aipack sync** — after modifying pack content (agents, skills, rules, workflows), run `aipack sync` to propagate to harness locations. Do not manually edit files in `.opencode/` or `.agent/`.
 9. **Do not edit generated artifacts** — files under `openspec/changes/`, `.opencode/`, and `.agent/` are managed by their respective tools. Edit the SSOT and let the tool pipeline propagate.
