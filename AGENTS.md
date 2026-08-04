@@ -17,11 +17,11 @@ ai-lib is a modular AI workflow library / agent pack. It defines a pipeline of s
 | `pack.json` | aipack manifest (name, version, schema) |
 | `METADATA.md` | SSOT for repository structure and agent protocol |
 | `agents/` | 5 agent definitions with YAML frontmatter (Pathfinder, Forge, Validator, Orchestrator, Keeper) |
-| `skills/` | 6 on-demand skill instructions (one SKILL.md per directory) |
+| `skills/` | 7 on-demand skill instructions (one SKILL.md per directory) |
 | `rules/agent-rules/` | 3 behavioral constraint files (forge-rules, pathfinder-rules, validator-rules) |
 | `rules/style-guides/` | 1 coding style guide (clean-code) |
 | `workflows/` | 1 multi-step workflow (spark-to-steel) |
-| `mcp/` | 1 MCP server config (github.json) |
+| `mcp/` | 2 MCP server configs (github.json, playwright.json) |
 | `openspec/` | OpenSpec schema, config, and change artifacts |
 | `.opencode/` | OpenCode harness integration (managed, do not edit manually) |
 | `.agent/` | OpenSpec agent harness integration (managed, do not edit manually) |
@@ -52,10 +52,10 @@ All agents reference MCP servers and skills by ID (not path). Tool restrictions 
 
 - **Role**: QA verification. Tests implementation against acceptance criteria, writes `qa-report.md`.
 - **Persona**: Thorough skeptic — assumes nothing works until proven.
-- **Skills loaded**: `test-plan`, `verify-implementation`
-- **MCP servers**: github
+- **Skills loaded**: `test-plan`, `verify-implementation`, `browser-verification`
+- **MCP servers**: github, playwright
 - **Tools**: Read, Grep, Glob, Bash, Terminal
-- **Restrictions**: No Write, Edit — read-only with test execution.
+- **Restrictions**: No Write, Edit — read-only with test execution. Denied browser tools: `browser_run_code_unsafe`, `browser_evaluate`. Browser E2E verification uses the Playwright MCP server for web-UI acceptance criteria.
 
 ## Orchestrator (`agents/orchestrator.md`)
 
@@ -89,7 +89,7 @@ Pathfinder ── writes tasks.md ──► Forge ── writes code ──► V
 
 # Skills
 
-Six on-demand skills in `skills/`. Each has a `SKILL.md` with frontmatter and step-by-step instructions. Invoke by ID, not path.
+Seven on-demand skills in `skills/`. Each has a `SKILL.md` with frontmatter and step-by-step instructions. Invoke by ID, not path.
 
 | Skill ID | Description | When to Use |
 |----------|-------------|-------------|
@@ -99,6 +99,7 @@ Six on-demand skills in `skills/`. Each has a `SKILL.md` with frontmatter and st
 | `review-code` | Self-review code before handoff: correctness, style, cleanliness, tests. | Before marking any task as complete. |
 | `test-plan` | Create a test plan from implementation and acceptance criteria. | Before executing verification. |
 | `verify-implementation` | Execute the test plan, check acceptance criteria, write `qa-report.md`. | After test plan is ready, to produce QA verdict. |
+| `browser-verification` | Verify web-UI acceptance criteria in a real browser via the Playwright MCP server. | When Validator must verify browser behavior for web-UI acceptance criteria. |
 
 # Rules
 
@@ -134,6 +135,15 @@ Full lifecycle pipeline: requirements gathering → implementation → QA verifi
 - **Tools**: all (`*`) — no allowlist restriction
 - **Portability**: No absolute paths or secrets. Uses `{env:GITHUB_PERSONAL_ACCESS_TOKEN}` placeholder.
 - **Prerequisite**: Set `GITHUB_PERSONAL_ACCESS_TOKEN` in your shell environment (a GitHub PAT with appropriate scopes).
+
+## Playwright (`mcp/playwright.json`)
+
+- **Type**: MCP server (stdio)
+- **Transport**: stdio — `npx @playwright/mcp@latest`
+- **Flags**: `--headless`, `--isolated`, `--caps=testing` — headless browser, fresh session per run, `browser_verify_*` assertion tools enabled
+- **Tools**: core browser tools + testing assertions only; `network`/`storage`/`devtools`/`vision`/`pdf` caps off
+- **Portability**: No absolute paths or secrets. Uses `npx` — the server resolves at runtime.
+- **Prerequisite**: Node.js 18+ and a Playwright browser installed (`npx playwright install chromium`). Wired to Validator only — other agents do not reference it.
 
 # Harness Wiring
 

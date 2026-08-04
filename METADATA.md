@@ -7,8 +7,11 @@ This repository is a modular AI workflow library.
 - /skills: On-demand skill instructions (one SKILL.md per skill directory)
 - /rules: Behavioral constraints and style guides
 - /workflows: Repeatable multi-step processes (markdown + frontmatter)
-- /mcp: MCP server configurations
+- /mcp: MCP server configurations (github, playwright)
 - /openspec: OpenSpec schema and changes
+
+## Key Capabilities
+- Validator (QA verification): runs unit/integration tests AND browser E2E checks via the Playwright MCP server (web-UI acceptance criteria). See `skills/browser-verification/`.
 
 ## Agent Protocol
 When modifying this repo:

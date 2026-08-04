@@ -1,0 +1,11 @@
+{
+  "name": "playwright",
+  "transport": "stdio",
+  "command": [
+    "npx",
+    "@playwright/mcp@latest",
+    "--headless",
+    "--isolated",
+    "--caps=testing"
+  ]
+}
