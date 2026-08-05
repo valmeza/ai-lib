@@ -1,9 +1,5 @@
 {
-  "mcpServers": {
-    "sqlcl": {
-      "name": "sqlcl",
-      "command": "sql",
-      "args": ["-mcp"]
-    }
-  }
+  "name": "sqlcl",
+  "command": "sql",
+  "args": ["-mcp"]
 }
