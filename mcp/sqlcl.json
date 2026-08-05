@@ -1,5 +1,5 @@
 {
   "name": "sqlcl",
-  "command": "sql",
-  "args": ["-mcp"]
+  "transport": "stdio",
+  "command": ["sql", "-mcp"]
 }
